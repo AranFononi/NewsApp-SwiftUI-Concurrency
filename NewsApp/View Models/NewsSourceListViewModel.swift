@@ -1,7 +1,7 @@
 
 
 import Foundation
-
+@MainActor
 class NewsSourceListViewModel: ObservableObject {
     @Published var newsSources: NewsSources = []
     let service = Webservice()
