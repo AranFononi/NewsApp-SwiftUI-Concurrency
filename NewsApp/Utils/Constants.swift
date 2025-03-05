@@ -2,14 +2,6 @@
 import Foundation
 
 struct Constants {
-    
-    struct Urls {
-        
-        static func topHeadlines(by source: String) -> URL? {
-            return URL(string: "https://newsapi.org/v2/top-headlines?sources=\(source)&apiKey=YOURAPIKEY")
-        }
-                
-        static let sources: URL? = URL(string: "https://newsapi.org/v2/sources?apiKey=YOURAPIKEY")
-    }
-    
+#error("Please enter your API Key from newsapi.org, and then delete this.")
+    static let apiKey = "YOURAPIKEY"
 }

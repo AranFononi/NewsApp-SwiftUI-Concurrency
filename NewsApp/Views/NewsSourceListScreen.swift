@@ -3,30 +3,34 @@
 import SwiftUI
 
 struct NewsSourceListScreen: View {
-    
-    @StateObject private var newsSourceListViewModel = NewsSourceListViewModel()
-    
+    @StateObject private var viewModel = NewsSourceListViewModel()
     var body: some View {
-        
-        NavigationView {
-        
-        List(newsSourceListViewModel.newsSources, id: \.id) { newsSource in
-            NavigationLink(destination: NewsListScreen(newsSource: newsSource)) {
-                NewsSourceCell(newsSource: newsSource)
+        NavigationStack {
+            List(viewModel.newsSources) { newsSource in
+                NavigationLink(value: newsSource) {
+                    NewsSourceCell(newsSource: newsSource)
+                }
             }
-        }
-        .listStyle(.plain)
-        .task({
-            await newsSourceListViewModel.getSources()
-        })
-        .navigationTitle("News Sources")
-        .navigationBarItems(trailing: Button(action: {
-            Task {
-                await newsSourceListViewModel.getSources()
+            .listStyle(.plain)
+            .refreshable {
+                await viewModel.getSources()
             }
-        }, label: {
-            Image(systemName: "arrow.clockwise.circle")
-        }))
+            .navigationDestination(for: NewsSource.self) { source in
+                NewsListScreen(newsSource: source)
+            }
+            .navigationTitle("News Sources")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("refresh", systemImage: "arrow.clockwise.circle") {
+                        Task {
+                            await viewModel.getSources()
+                        }
+                    }
+                }
+            }
+            .task {
+                await viewModel.getSources()
+            }
         }
     }
 }
@@ -38,9 +42,8 @@ struct NewsSourceListScreen_Previews: PreviewProvider {
 }
 
 struct NewsSourceCell: View {
-    
-    let newsSource: NewsSourceViewModel 
-    
+    let newsSource: NewsSource
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(newsSource.name)
