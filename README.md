@@ -47,4 +47,3 @@ This project focuses on modern concurrency techniques in Swift, replacing tradit
 ## Contact
 For more information, feel free to reach out:  
 - **Email**: [aranfononi@gmail.com](mailto:aranfononi@gmail.com)  
-- **LinkedIn**: [Aran Fononi](https://www.linkedin.com/in/aran-fononi-18182b265)
